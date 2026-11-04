@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 620" role="img" aria-labelledby="title desc">
+<title id="title">FLOP Local Miner — diagnostic mission control</title>
+<desc id="desc">An original illustration of a luminous multi-GPU circuit on a midnight-blue dashboard. Four independent diagnostic gates remain unverified.</desc>
+<defs>
+  <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0c142c"/><stop offset=".55" stop-color="#101c38"/><stop offset="1" stop-color="#142842"/></linearGradient>
+  <radialGradient id="glow"><stop stop-color="#58e1d3" stop-opacity=".24"/><stop offset="1" stop-color="#58e1d3" stop-opacity="0"/></radialGradient>
+  <linearGradient id="line" x2="1"><stop stop-color="#47dec8"/><stop offset="1" stop-color="#9c8ef4"/></linearGradient>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#9bb0c9" stroke-opacity=".09"/></pattern>
+  <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22"/></filter>
+</defs>
+<rect width="1440" height="620" rx="28" fill="url(#bg)"/><rect width="1440" height="620" rx="28" fill="url(#grid)"/>
+<circle cx="1030" cy="300" r="340" fill="url(#glow)"/><circle cx="1070" cy="291" r="190" fill="#49d9c8" opacity=".09" filter="url(#shadow)"/>
+<path d="M80 118h236" stroke="url(#line)" stroke-width="3"/><circle cx="328" cy="118" r="4" fill="#61e1cf"/>
+<text x="80" y="99" fill="#64e4ce" font-family="ui-monospace,monospace" font-size="15" letter-spacing="4">OPEN DIAGNOSTIC TOOLKIT / 01</text>
+<text x="80" y="205" fill="#f5f8ff" font-family="Arial, sans-serif" font-size="59" font-weight="800" letter-spacing="-2">FLOP LOCAL</text>
+<text x="80" y="274" fill="#f5f8ff" font-family="Arial, sans-serif" font-size="59" font-weight="800" letter-spacing="-2">MINER</text>
+<text x="82" y="328" fill="#aabbd3" font-family="Arial,sans-serif" font-size="18">Understand your environment. Keep proof separate.</text>
+<text x="82" y="359" fill="#aabbd3" font-family="Arial,sans-serif" font-size="18">Ortamını tanı. Kanıt seviyelerini ayrı tut.</text>
+<rect x="80" y="397" width="310" height="56" rx="14" fill="#58dfcb"/><text x="104" y="433" fill="#102139" font-family="Arial,sans-serif" font-size="16" font-weight="700">GPU-FIRST / SALT OKUNUR</text>
+<rect x="80" y="489" width="551" height="74" rx="17" fill="#142640" stroke="#516981" stroke-opacity=".55"/><circle cx="110" cy="526" r="7" fill="#f3bf74"/><text x="130" y="521" fill="#f7f9fe" font-family="Arial,sans-serif" font-size="15" font-weight="700">Official miner runtime not included</text><text x="130" y="544" fill="#aabbd3" font-family="Arial,sans-serif" font-size="13">Operator assets and accepted work evidence required.</text>
+<g fill="none" stroke="url(#line)" opacity=".5"><circle cx="1030" cy="305" r="237" stroke-dasharray="2 13" stroke-width="2"/><circle cx="1030" cy="305" r="180" stroke-width="1.5"/><circle cx="1030" cy="305" r="139" stroke-dasharray="70 13" stroke-width="8" opacity=".5"/><circle cx="1030" cy="305" r="94" stroke-width="2"/></g>
+<g fill="#60dfcb"><circle cx="1030" cy="68" r="5"/><circle cx="1190" cy="189" r="5"/><circle cx="1250" cy="390" r="5"/><circle cx="887" cy="373" r="5"/></g>
+<path d="M786 301h111m282-1h137M1030 69v116m0 240v108" stroke="url(#line)" stroke-width="2" stroke-dasharray="7 8" opacity=".75"/>
+<rect x="934" y="210" width="192" height="192" rx="26" fill="#142845" stroke="#80eee1" stroke-width="2"/><rect x="959" y="236" width="142" height="140" rx="15" fill="#1e3750" stroke="#507e94"/><circle cx="1030" cy="305" r="55" fill="#122b42" stroke="#70e7d6" stroke-width="2"/><path d="M1030 252c17 24 18 39 0 53-18 14-17 29 0 52m-53-52c25-17 38-17 53 0 14 18 29 17 53 0m-53-53c-16 24-16 38 0 53 17 15 16 29 0 52" stroke="#87ece1" stroke-width="2" fill="none" opacity=".7"/><circle cx="1030" cy="305" r="10" fill="#70e7d6"/>
+<g fill="#8ddfdc"><circle cx="952" cy="197" r="4"/><circle cx="981" cy="197" r="4"/><circle cx="1010" cy="197" r="4"/><circle cx="1039" cy="197" r="4"/><circle cx="1068" cy="197" r="4"/><circle cx="1097" cy="197" r="4"/><circle cx="952" cy="415" r="4"/><circle cx="981" cy="415" r="4"/><circle cx="1010" cy="415" r="4"/><circle cx="1039" cy="415" r="4"/><circle cx="1068" cy="415" r="4"/><circle cx="1097" cy="415" r="4"/></g>
+<rect x="1184" y="100" width="188" height="72" rx="15" fill="#1c304e" stroke="#536b87"/><text x="1202" y="128" fill="#92e9dc" font-family="Arial,sans-serif" font-size="13" font-weight="700">01  GPU VISIBLE</text><text x="1202" y="150" fill="#c2cfe0" font-family="Arial,sans-serif" font-size="13">not yet checked</text>
+<rect x="1188" y="443" width="184" height="82" rx="15" fill="#1c304e" stroke="#536b87"/><text x="1206" y="469" fill="#f4c787" font-family="Arial,sans-serif" font-size="13" font-weight="700">04  ACCEPTED WORK</text><text x="1206" y="494" fill="#c2cfe0" font-family="Arial,sans-serif" font-size="12">independent proof</text>
+<path d="M1370 563h-160" stroke="#6b829e"/><text x="1210" y="585" fill="#9eb2c9" font-family="ui-monospace,monospace" font-size="12">SYSTEM ≠ NETWORK</text>
+</svg>
