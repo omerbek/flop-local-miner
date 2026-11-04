@@ -6,9 +6,11 @@
 
 **GPU-first diagnostics / Önce GPU, sonra ortam ve ağ kanıtı**
 
-[**🇹🇷 Türkçe kurulum**](docs/README.tr.md) · [**🇬🇧 English setup**](docs/README.en.md) · [**Animated bilingual guide / Animasyonlu rehber**](site/index.html)
+[**🇹🇷 Türkçe kurulum**](docs/README.tr.md) · [**🇬🇧 English setup**](docs/README.en.md) · [**Animated bilingual guide / Animasyonlu rehber ↗**](https://omerbek.github.io/flop-local-miner/site/)
 
 ![Windows · Ubuntu · NVIDIA · MIT · diagnostics only](assets/platform-badges.svg)
+
+[![Linux + Windows syntax and mock diagnostics CI](https://github.com/omerbek/flop-local-miner/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/omerbek/flop-local-miner/actions/workflows/ci.yml)
 
 </div>
 
@@ -84,7 +86,7 @@ flowchart LR
 
 ![Multiple NVIDIA profiles, each independently assessed](assets/gpu-family.svg)
 
-The [local animated dashboard](site/index.html) uses original SVG art, an English/Türkçe switch, keyboard-accessible steps and optional **local-only** JSON report import. It does not upload a report or start a miner. Motion respects reduced-motion preferences. GitHub README SVGs are static fallback; open the local HTML (or GitHub Pages if published) for motion.
+The [live animated dashboard](https://omerbek.github.io/flop-local-miner/site/) (also available as [offline local HTML](site/index.html)) uses original SVG art, an English/Türkçe switch, keyboard-accessible steps and optional **local-only** JSON report import. It does not upload a report or start a miner. Motion respects reduced-motion preferences. GitHub README SVGs are static fallback; use the live page or open the offline HTML for motion.
 
 ## Documentation / Belgeler
 

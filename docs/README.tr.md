@@ -1,6 +1,6 @@
 # FLOP Local Miner — Türkçe rehber
 
-[English guide](README.en.md) · [Ana sayfa](../README.md) · [Etkileşimli rehber](../site/index.html) · [Uyumluluk](GPU-COMPATIBILITY.md) · [Resmî entegrasyon sınırı](OFFICIAL-INTEGRATION.md)
+[English guide](README.en.md) · [Ana sayfa](../README.md) · [Animasyonlu etkileşimli rehber ↗](https://omerbek.github.io/flop-local-miner/site/) · [Uyumluluk](GPU-COMPATIBILITY.md) · [Resmî entegrasyon sınırı](OFFICIAL-INTEGRATION.md)
 
 ![Farklı NVIDIA kartları için donanım keşfi](../assets/gpu-family.svg)
 
