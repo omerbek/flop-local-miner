@@ -32,6 +32,18 @@ flowchart LR
 
 ![Diagnostic steps from host to deployment boundary](assets/setup-flow.svg)
 
+## ✅ Real-world verified miner / Sahada doğrulanan miner
+
+**6 Nov 2026:** A Windows/WSL2 RTX 5090 Laptop GPU was registered with sponsored stake, ran the official FLOP worker/backend and obtained accepted **130 GFLOP/s SOFT calibration (64 verified jobs / 623 blocks)**. These are owner-provided CLI/on-chain outputs, **not CI test results**. Paid jobs/rewards were not shown. The repository's own tools remain diagnostic-only.
+
+**[🇹🇷 Baştan sona kurulum](docs/VERIFIED-DEVNET-SETUP.tr.md) · [🇬🇧 End-to-end field guide](docs/VERIFIED-DEVNET-SETUP.en.md) · [🧰 Practical troubleshooting](docs/FIELD-TROUBLESHOOTING.md)**
+
+On an **already configured official FLOP runtime**, you can read status without changing any secrets:
+
+```bash
+bash scripts/miner-health.sh YOUR_MINER_SS58_ADDRESS
+```
+
 ## Quick start / Hızlı başlangıç
 
 1. **Read-only Windows checks / Windows salt okunur kontrol:** open PowerShell at repository root, review the scripts, then run:
@@ -90,6 +102,6 @@ The [live animated dashboard](https://omerbek.github.io/flop-local-miner/site/) 
 
 ## Documentation / Belgeler
 
-[🇹🇷 Verified field install](docs/VERIFIED-DEVNET-SETUP.tr.md) · [🇬🇧 Verified setup](docs/VERIFIED-DEVNET-SETUP.en.md) · [EN diagnostics](docs/README.en.md) · [TR teşhis](docs/README.tr.md) · [GPU compatibility](docs/GPU-COMPATIBILITY.md) · [Official integration boundary](docs/OFFICIAL-INTEGRATION.md) · [Troubleshooting](docs/TROUBLESHOOTING.md) · [Miner checklist](docs/MINER-CHECKLIST.md) · [RTX 5090 laptop example](examples/rtx-5090-laptop.md) · [Evidence and official sources](docs/RESEARCH.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [MIT License](LICENSE)
+[🇹🇷 Verified field install](docs/VERIFIED-DEVNET-SETUP.tr.md) · [🇬🇧 Verified setup](docs/VERIFIED-DEVNET-SETUP.en.md) · [EN diagnostics](docs/README.en.md) · [TR teşhis](docs/README.tr.md) · [GPU compatibility](docs/GPU-COMPATIBILITY.md) · [Official integration boundary](docs/OFFICIAL-INTEGRATION.md) · [Troubleshooting](docs/TROUBLESHOOTING.md) · [Field fixes](docs/FIELD-TROUBLESHOOTING.md) · [Miner checklist](docs/MINER-CHECKLIST.md) · [RTX 5090 laptop example](examples/rtx-5090-laptop.md) · [Evidence and official sources](docs/RESEARCH.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [MIT License](LICENSE)
 
 Physical GPU/container tests require a correctly configured machine; Python fixtures in CI are **not** hardware verification. No code/assets from third-party [UfukNode/flop-miner-setup](https://github.com/UfukNode/flop-miner-setup) or NVIDIA GPU Operator are included; [source comparison](docs/RESEARCH.md) documents independent design principles.
