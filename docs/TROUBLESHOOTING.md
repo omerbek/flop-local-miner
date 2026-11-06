@@ -1,3 +1,5 @@
+> **New: field-verified fixes / Sahada doğrulanan çözümler:** [FIELD-TROUBLESHOOTING.md](FIELD-TROUBLESHOOTING.md). Includes sponsorship 429 limits, BF16 model fetch, CLI version differences, Ghost tasks, calibration and Cloudflare Quick Tunnel.
+
 # Troubleshooting / Sorun giderme
 
 [English](README.en.md) · [Türkçe](README.tr.md) · [Evidence](RESEARCH.md)
