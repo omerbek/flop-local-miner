@@ -1,3 +1,5 @@
+> **FIELD UPDATE — 2026-11-06:** This file originally described the evidence available on 2026-11-04 from a *different* RTX 3060 test environment. Later direct user-provided CLI and on-chain records confirmed Devnet sponsored miner registration, verified Qwen BF16 model, healthy GPU backend + worker and **130 GFLOP/s accepted SOFT calibration** on an RTX 5090 Laptop. Earlier claims of no working Devnet enrollment or no RTX 5090 test are **historical snapshots, not current network state**. [TR](VERIFIED-DEVNET-SETUP.tr.md) · [EN](VERIFIED-DEVNET-SETUP.en.md). No paid receipts were verified.
+
 # Evidence before implementation / Uygulama öncesi kanıtlar
 
 Accessed / Erişim: 2026-11-04. Scope: original, read-only-first NVIDIA GPU readiness diagnostics for Windows 10/11 + WSL2 Ubuntu 24.04 and native Ubuntu 24.04. No FLOP source, image, or operator pack was copied. The requested `flop-local-miner-v0.2.zip` was not present in the checked Desktop, miden or Downloads paths; this is a new implementation, not a verified merge of that ZIP.
