@@ -5,3 +5,10 @@
 **TR:** Bu depo onaylı FLOP miner sürümü değil, teşhis/kurulum rehberidir. Kaynağı, sürümü/digest'i ve operatör yetkisini doğrulamadan operatör paketi, konteyner, cüzdan aracı veya betik çalıştırmayın. GPU konteyner kontrolü yalnızca açık `--run` ile çalışır; imaj digest ile sabittir, fakat inceleme ve uygun sürücü yine sizin sorumluluğunuzdadır. Betikler mnemonic, cüzdan, keystore, seed veya token istemez. Kimlikler varsayılan olarak maskelense bile GPU özellikleri dolaylı tanımlayıcı olabilir; raporları yayımlamadan önce inceleyin. Ham 8000/8645 portlarını internete açmayın; gelecekte operatör onaylı kurulum varsa yetkilendirilmiş HTTPS proxy/tünel kullanın. Yerel sitede seçilen JSON yalnızca tarayıcıda işlenir.
 
 **Report privately / Özel bildirim:** Use the repository's GitHub Security → Report a vulnerability option when enabled, or [contact the maintainer privately](https://github.com/omerbek). Never post secrets, IP addresses or machine identifiers in public issues. Maintainer will triage and coordinate a fix before public disclosure. No bounty or response-time guarantee.
+
+
+## Operational addendum / İşletim notu (2026-11-06)
+
+User-provided field evidence now confirms an actual official-runtime Devnet miner (not deployed by these repository scripts). Keep `/opt/flop-miner/signer`, encrypted `miner.json`, `miner.env`, `session-keys/`, worker persistent volumes and any sponsor watcher state out of commits, shared logs and GitHub Actions. Use independent wallets per host. Keep the backend port 8000 private; only the authenticated worker session endpoint should be routed via reviewed HTTPS tunnel. Quick Tunnel domains can change on restart; verify endpoint advertisements. Avoid parallel `model fetch` jobs and `docker compose down -v`; an active calibration is **not evidence of paid earnings**.
+
+Gerçek sahada miner kaydı ve kalibrasyon doğrulandı; ancak bu repo gizli dosyaları içermemelidir. Seed ve şifreleri paylaşmayın. Her yeni kurulumda bağımsız cüzdan kullanın. Ham backend portu 8000'i internete açmayın; tünel adresini kontrol edin. `docker compose down -v` kullanmayın.
