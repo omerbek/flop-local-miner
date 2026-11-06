@@ -32,3 +32,17 @@ __pycache__/
 .venv/
 .vscode/
 .DS_Store
+
+# Explicit FLOP operator artifacts, hidden state and encrypted keystores
+miner.env
+miner.json
+signer
+.sponsor-watch-state.json
+.sponsor-watch-state.json.*
+session-keys/
+worker-data/
+**/miner.json
+**/miner.env
+**/signer
+**/session-keys/
+**/.sponsor-watch-state.json

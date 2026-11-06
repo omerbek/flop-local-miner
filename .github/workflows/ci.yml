@@ -16,7 +16,7 @@ jobs:
       - name: Python behavior tests
         run: python -m unittest discover -s tests -v
       - name: Bash syntax
-        run: bash -n scripts/preflight.sh scripts/gpu-container-test.sh
+        run: bash -n scripts/preflight.sh scripts/gpu-container-test.sh scripts/miner-health.sh
       - name: GPU diagnostic smoke without physical GPU
         run: python scripts/gpu_detect.py --json --dry-run
       - name: Check original SVG validity

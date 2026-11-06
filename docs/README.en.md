@@ -4,7 +4,7 @@
 
 ![Discover hardware across different NVIDIA cards](../assets/gpu-family.svg)
 
-> **Not a functioning FLOP miner.** This open-source project diagnoses GPUs and prepares the host. It cannot start a miner without the official operator pack, identity/approval, checkpoint, policy, registration and calibration. Devnet earnings are not promised. The observed machine had an RTX 3060 Laptop GPU; the RTX 5090 example is not a real hardware test. [Sources and limitations](RESEARCH.md).
+> **These repository scripts are diagnostics, not a complete miner installer.** However, a subsequent **real RTX 5090 Laptop GPU field deployment** using official FLOP runtime, sponsored registration and **130 GFLOP/s accepted calibration** was confirmed through user-provided logs and on-chain state on 6 November 2026. [**Step-by-step field setup →**](VERIFIED-DEVNET-SETUP.en.md). This does not prove paid rewards or universal GPU compatibility.
 
 ## 0 · Review the code
 
@@ -99,9 +99,9 @@ For a readable English report use `python3 scripts/gpu_detect.py --lang en` and 
 | --- | --- |
 | 1. Host/WSL GPU visibility | Yes, on the host where run |
 | 2. GPU access from Docker | Only with an explicit successful physical `--run` test |
-| 3. FLOP inference + registration + accepted calibration | No; operator assets and real network evidence required |
+| 3. FLOP inference + registration + accepted calibration | Not implemented by repo scripts; **verified externally on a real RTX 5090 laptop with official runtime**. [Evidence](VERIFIED-DEVNET-SETUP.en.md) |
 | 4. Actual network-accepted work | No; public paid-session gates not open |
 
 ![Four independent evidence levels](../assets/status-stages.svg)
 
-**5090 Windows laptop example:** [examples/rtx-5090-laptop.md](../examples/rtx-5090-laptop.md). This is not a measured RTX 5090 run. See [TR/EN troubleshooting](TROUBLESHOOTING.md) and [checklist](MINER-CHECKLIST.md) if blocked.
+**5090 Windows laptop example:** [examples/rtx-5090-laptop.md](../examples/rtx-5090-laptop.md). For the subsequent measured RTX 5090 field run, see [verified setup](VERIFIED-DEVNET-SETUP.en.md). See [TR/EN troubleshooting](TROUBLESHOOTING.md) and [checklist](MINER-CHECKLIST.md) if blocked.
