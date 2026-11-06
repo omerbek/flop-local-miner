@@ -4,7 +4,7 @@
 
 ![Farklı NVIDIA kartları için donanım keşfi](../assets/gpu-family.svg)
 
-> **Gerçek FLOP miner değildir.** Bu açık kaynak araç GPU/çalışma ortamı teşhisi ve hazırlığı içindir. Resmî operatör paketi, kimlik/onay, checkpoint, policy, kayıt ve kalibrasyon elde edilmeden miner başlatmaz. Devnet geliri vaat edilmez. Gözlenen makinede RTX 3060 Laptop GPU vardı; RTX 5090 örneği gerçek test değildir. [Kaynaklar ve sınırlamalar](RESEARCH.md).
+> **Bu dosya repo'nun tanılama araçlarını açıklar; bir FLOP miner kurucusu değildir.** Ancak 6 Kasım 2026'da gerçek bir RTX 5090 Laptop kurulumunda **resmî worker/backend, sponsorluk ve 130 GFLOP/s kabul edilmiş kalibrasyon** kullanıcı tarafından sağlanan zincir çıktılarıyla doğrulandı. **[Uçtan uca gerçek kurulum rehberi →](VERIFIED-DEVNET-SETUP.tr.md)**. Bu başarı tüm GPU'ları veya ücretli kazancı garanti etmez.
 
 ## 0 · Kodu inceleyin
 
@@ -99,9 +99,9 @@ Okunabilir Türkçe rapor için `python3 scripts/gpu_detect.py --lang tr` ve `py
 | --- | --- |
 | 1. Host/WSL GPU görünürlüğü | Evet, yalnızca çalıştırılan hostta |
 | 2. Docker GPU erişimi | Yalnızca açık `--run` ve başarılı fiziksel konteyner testiyle |
-| 3. FLOP inference + kayıt + kabul edilmiş kalibrasyon | Hayır; operatör paketi ve gerçek ağ kanıtı gerekli |
+| 3. FLOP inference + kayıt + kabul edilmiş kalibrasyon | Bu repo scriptleriyle değil; **resmî runtime kullanan gerçek bir RTX 5090 hostunda doğrulandı**. [Kanıt](VERIFIED-DEVNET-SETUP.tr.md) |
 | 4. Ağın kabul ettiği gerçek iş | Hayır; public paid-session kapıları açık değil |
 
 ![Dört kanıt katmanı](../assets/status-stages.svg)
 
-**5090 Windows laptop örneği:** [examples/rtx-5090-laptop.md](../examples/rtx-5090-laptop.md). Gerçek RTX 5090 üzerinde çalıştırılmış rapor değildir. Sorun varsa [TR/EN troubleshooting](TROUBLESHOOTING.md) ve [checklist](MINER-CHECKLIST.md) dosyalarına bakın.
+**5090 Windows laptop örneği:** [examples/rtx-5090-laptop.md](../examples/rtx-5090-laptop.md). Gerçek RTX 5090 saha kaydı için [doğrulanmış rehbere](VERIFIED-DEVNET-SETUP.tr.md) bakın. Sorun varsa [TR/EN troubleshooting](TROUBLESHOOTING.md) ve [checklist](MINER-CHECKLIST.md) dosyalarına bakın.
