@@ -14,7 +14,7 @@
 
 </div>
 
-> **EN:** An original, MIT-licensed readiness toolkit, **not an operational FLOP miner**. No wallet, seed, token, stake, accepted work or earnings promise. FLOP's operator assets and invite/approval are required; public paid miner admission is not open in the [current official miner manual](https://docs.flop.network/docs/run-miner). **TR:** Özgün, MIT lisanslı hazırlık aracı; **çalışan FLOP miner değil**. Cüzdan/anahtar istemez, gelir vaat etmez. Resmî operatör paketi ve izin gereklidir. [Kaynak ve tarih](docs/RESEARCH.md).
+> **UPDATED / GÜNCELLENDİ — 6 November 2026:** The **repository tools** are still read-only diagnostics, **not** a packaged miner installer. However, a community-operated RTX 5090 Laptop GPU **did successfully run the official FLOP backend/worker**, register via sponsor, and receive **130 GFLOP/s accepted SOFT calibration** on Devnet. **No paid work/rewards were verified.** / Repo araçları hâlâ teşhis amaçlıdır; fakat resmî FLOP miner ile gerçek RTX 5090 Laptop kurulumu ve zincirde kabul edilmiş kalibrasyon doğrulandı. Ücretli iş veya kazanç doğrulanmadı. **[🇹🇷 Gerçek kurulum](docs/VERIFIED-DEVNET-SETUP.tr.md) · [🇬🇧 Verified setup](docs/VERIFIED-DEVNET-SETUP.en.md)**
 
 ![Windows → WSL2 → Docker → GPU → FLOP architecture; last stage not verified](assets/architecture.svg)
 
@@ -28,7 +28,7 @@ flowchart LR
     D -. accepted paid receipt .-> E[Network-accepted work]
 ```
 
-**Stages 1 and 2 never imply 3 or 4. / 1 ve 2, 3 ve 4'ü kanıtlamaz.** GPU models are enumerated, not hardcoded; missing sensors are `unknown`, identifiers are masked. An RTX 5090 Laptop GPU is only a [worked-through guide](examples/rtx-5090-laptop.md), **not** a verified host run. This session observed an RTX 3060 Laptop GPU, stopped WSL2 due to virtualization and missing Docker; no 5090 or FLOP acceptance was tested.
+**Stages 1 and 2 never imply 3 or 4.** Repo's original diagnostic development machine reported an RTX 3060 Laptop with unavailable WSL/Docker; this was **a different machine**. Subsequently, user-provided real RTX 5090 Laptop logs and finalized Devnet state verified level 3 externally: [field report](examples/rtx-5090-laptop.md). The diagnostic scripts have still **not themselves deployed a miner**.
 
 ![Diagnostic steps from host to deployment boundary](assets/setup-flow.svg)
 
@@ -81,8 +81,8 @@ flowchart LR
 | --- | --- |
 | Read-only Windows and Ubuntu checks, multi-GPU inventory, masked JSON / Salt okunur teşhis | Implemented; physical results depend on host / Uygulandı; sonuç hosta bağlı |
 | Optional digest-pinned NVIDIA CUDA container probe / İsteğe bağlı sabitlenmiş CUDA testi | Needs explicit `--run` and compatible Docker/driver / Açık onay ve uygun ortam şart |
-| Official FLOP worker/backend, model measurement and chain registration / Resmî FLOP entegrasyonu | **NOT_IMPLEMENTED: official operator assets required** |
-| Paid or accepted FLOP work / Ücretli veya kabul edilmiş iş | **Not demonstrated / Kanıtlanmadı** |
+| Official FLOP worker/backend, model measurement and chain registration / Resmî FLOP entegrasyonu | **Field verified with external official runtime; not implemented by this repo.** See [TR](docs/VERIFIED-DEVNET-SETUP.tr.md) / [EN](docs/VERIFIED-DEVNET-SETUP.en.md). |
+| Paid or accepted FLOP work / Ücretli veya kabul edilmiş iş | **Not demonstrated / Kanıtlanmadı**; 64 verified **calibration** jobs are not paid receipts. |
 
 ![Multiple NVIDIA profiles, each independently assessed](assets/gpu-family.svg)
 
@@ -90,6 +90,6 @@ The [live animated dashboard](https://omerbek.github.io/flop-local-miner/site/) 
 
 ## Documentation / Belgeler
 
-[EN install](docs/README.en.md) · [TR kurulum](docs/README.tr.md) · [GPU compatibility](docs/GPU-COMPATIBILITY.md) · [Official integration boundary](docs/OFFICIAL-INTEGRATION.md) · [Troubleshooting](docs/TROUBLESHOOTING.md) · [Miner checklist](docs/MINER-CHECKLIST.md) · [RTX 5090 laptop example](examples/rtx-5090-laptop.md) · [Evidence and official sources](docs/RESEARCH.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [MIT License](LICENSE)
+[🇹🇷 Verified field install](docs/VERIFIED-DEVNET-SETUP.tr.md) · [🇬🇧 Verified setup](docs/VERIFIED-DEVNET-SETUP.en.md) · [EN diagnostics](docs/README.en.md) · [TR teşhis](docs/README.tr.md) · [GPU compatibility](docs/GPU-COMPATIBILITY.md) · [Official integration boundary](docs/OFFICIAL-INTEGRATION.md) · [Troubleshooting](docs/TROUBLESHOOTING.md) · [Miner checklist](docs/MINER-CHECKLIST.md) · [RTX 5090 laptop example](examples/rtx-5090-laptop.md) · [Evidence and official sources](docs/RESEARCH.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [MIT License](LICENSE)
 
 Physical GPU/container tests require a correctly configured machine; Python fixtures in CI are **not** hardware verification. No code/assets from third-party [UfukNode/flop-miner-setup](https://github.com/UfukNode/flop-miner-setup) or NVIDIA GPU Operator are included; [source comparison](docs/RESEARCH.md) documents independent design principles.
