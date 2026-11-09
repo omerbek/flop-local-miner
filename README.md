@@ -6,7 +6,7 @@
 
 **GPU-first diagnostics / Önce GPU, sonra ortam ve ağ kanıtı**
 
-[**🇹🇷 Türkçe kurulum**](docs/README.tr.md) · [**🇬🇧 English setup**](docs/README.en.md) · [**Animated bilingual guide / Animasyonlu rehber ↗**](https://omerbek.github.io/flop-local-miner/site/)
+[**🇹🇷 Miner + Validator animasyonlu rehber ↗**](https://omerbek.github.io/flop-local-miner/site/validator.html) · [**🇹🇷 Validator kurulum**](docs/VALIDATOR-SETUP.tr.md) · [**🇬🇧 Validator setup**](docs/VALIDATOR-SETUP.en.md) · [**GPU teşhis paneli ↗**](https://omerbek.github.io/flop-local-miner/site/)
 
 ![Windows · Ubuntu · NVIDIA · MIT · diagnostics only](assets/platform-badges.svg)
 
@@ -31,6 +31,14 @@ flowchart LR
 **Stages 1 and 2 never imply 3 or 4.** Repo's original diagnostic development machine reported an RTX 3060 Laptop with unavailable WSL/Docker; this was **a different machine**. Subsequently, user-provided real RTX 5090 Laptop logs and finalized Devnet state verified level 3 externally: [field report](examples/rtx-5090-laptop.md). The diagnostic scripts have still **not themselves deployed a miner**.
 
 ![Diagnostic steps from host to deployment boundary](assets/setup-flow.svg)
+
+## ⬡ NEW: GPU Miner + Devnet Validator / Miner + Validator
+
+**9 Kasım 2026 saha güncellemesi:** Aynı Windows + WSL2 Ubuntu üzerinde GPU Miner başarıyla çalıştırıldı ve kalibre edildi; ayrı FLOP Devnet **Validator hazırlığı** da tamamlandı. Validator paketi (0.3.0-devnet.1), **26/26 checksum**, canlı Devnet preflight, **2/2 Cosign imzası**, Node 24 / pnpm, ayrı SS58 hesabı ve age şifreli yedekler doğrulandı. **Self-hosted Validator başvurusu ve GitHub #10 yorumu gönderildi. Validator henüz ağa katılmadı ve aktif değil.** Bu repo ne miner ne validator resmî Docker paketlerini dağıtır; bu kayıtlar terminal gözlemleridir, canlı dashboard değildir.
+
+[![Animated Miner and Validator workflow](assets/miner-validator-journey.svg)](https://omerbek.github.io/flop-local-miner/site/validator.html)
+
+**[▶ İnteraktif, animasyonlu iki dilli rehber](https://omerbek.github.io/flop-local-miner/site/validator.html) · [Türkçe Validator rehberi](docs/VALIDATOR-SETUP.tr.md) · [English Validator guide](docs/VALIDATOR-SETUP.en.md)**
 
 ## ✅ Real-world verified miner / Sahada doğrulanan miner
 
