@@ -135,4 +135,4 @@ Do **not** run `pnpm onboard join` until explicitly instructed and required acce
 - This repository documents the verified preparation, **not** a deployed or activated Validator; it redistributes no official Validator bundles.
 - All field evidence is user-supplied, not independently tested by CI; the animated page is **not live telemetry**.
 - Concurrent fully operating Validator+GPU Miner performance is unmeasured.
-- Current rules and release material may change; see [official FLOP docs](https://docs.flop.network/docs/run-validator), [UfukNode third-party guide](https://github.com/UfukNode/flop-validator-setup/blob/main/Turkce-Kurulum.md), [FLOP issue #10](https://github.com/flop-labs/network/issues/10).
+- Current rules and release material may change; see [official FLOP docs](https://docs.flop.network/docs/run-validator), [FLOP issue #10](https://github.com/flop-labs/network/issues/10).
