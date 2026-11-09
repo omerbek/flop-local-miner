@@ -32,9 +32,15 @@ flowchart LR
 
 ![Diagnostic steps from host to deployment boundary](assets/setup-flow.svg)
 
-## ⬡ NEW: GPU Miner + Devnet Validator / Miner + Validator
+## 📘 Learn / Eğitim: Start here
 
-**9 Kasım 2026 saha güncellemesi:** Aynı Windows + WSL2 Ubuntu üzerinde GPU Miner başarıyla çalıştırıldı ve kalibre edildi; ayrı FLOP Devnet **Validator hazırlığı** da tamamlandı. Validator paketi (0.3.0-devnet.1), **26/26 checksum**, canlı Devnet preflight, **2/2 Cosign imzası**, Node 24 / pnpm, ayrı SS58 hesabı ve age şifreli yedekler doğrulandı. **Self-hosted Validator başvurusu ve GitHub #10 yorumu gönderildi. Validator henüz ağa katılmadı ve aktif değil.** Bu repo ne miner ne validator resmî Docker paketlerini dağıtır; bu kayıtlar terminal gözlemleridir, canlı dashboard değildir.
+This is a **free educational resource**, not a promotional case study. Begin with concepts, prerequisites, verification gates and common failure modes. / **Bu bir reklam veya kişisel başarı tanıtımı değil; ücretsiz, uygulamalı eğitim rehberi.** Önce kavramları, sonra güvenli uygulamayı, doğrulamayı ve sorun gidermeyi öğrenin.
+
+**[🇹🇷 Sıfırdan eğitim yol haritası](docs/LEARNING-PATH.tr.md) · [🇬🇧 Educational learning path](docs/LEARNING-PATH.en.md) · [▶ Interactive learning walkthrough](https://omerbek.github.io/flop-local-miner/site/validator.html)**
+
+## ⬡ GPU Miner + Devnet Validator / Miner + Validator
+
+**9 Kasım 2026 örnek vaka (reklam değildir):** Aynı Windows + WSL2 Ubuntu üzerinde GPU Miner başarıyla çalıştırıldı ve kalibre edildi; ayrı FLOP Devnet **Validator hazırlığı** da tamamlandı. Validator paketi (0.3.0-devnet.1), **26/26 checksum**, canlı Devnet preflight, **2/2 Cosign imzası**, Node 24 / pnpm, ayrı SS58 hesabı ve age şifreli yedekler doğrulandı. **Self-hosted Validator başvurusu ve GitHub #10 yorumu gönderildi. Validator henüz ağa katılmadı ve aktif değil.** Bu repo ne miner ne validator resmî Docker paketlerini dağıtır; bu kayıtlar terminal gözlemleridir, canlı dashboard değildir.
 
 [![Animated Miner and Validator workflow](assets/miner-validator-journey.svg)](https://omerbek.github.io/flop-local-miner/site/validator.html)
 
