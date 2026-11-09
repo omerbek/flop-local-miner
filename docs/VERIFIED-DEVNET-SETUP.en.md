@@ -35,7 +35,7 @@ docker compose version
 
 ## 2. Existing official runtime
 
-The commands below assume a previously reviewed `/opt/flop-miner` runtime deployment. This diagnostic repository is **not a full installer**. Study the [official operator guide](https://docs.flop.network/docs/run-miner) and the [UfukNode example](https://github.com/UfukNode/flop-miner-setup).
+The commands below assume a previously reviewed `/opt/flop-miner` runtime deployment. This diagnostic repository is **not a full installer**. Study the [official operator guide](https://docs.flop.network/docs/run-miner), verify versions and compare each command with the supported CLI for your release.
 
 ```bash
 cd /opt/flop-miner
@@ -125,4 +125,4 @@ Field transaction recorded `flop.gpu-inventory.v1` but `attested_gpu_inventory:[
 
 Prevent Windows sleep; verify WSL launch after reboot. Monitor `docker compose ps`, `nvidia-smi` and tunnel URL changes. Back up signer, encrypted keystore, session keys and worker state securely. Never run `docker compose down -v` on an active deployment. No promised devnet earnings.
 
-[Official FLOP docs](https://docs.flop.network/docs/run-miner) · [Third-party UfukNode guide](https://github.com/UfukNode/flop-miner-setup/blob/main/Turkce-Kurulum.md). Results here are attributed to user-provided field evidence, not a test conducted by the repository CI.
+[Official FLOP docs](https://docs.flop.network/docs/run-miner). Results here are attributed to user-provided field evidence, not a test conducted by the repository CI.

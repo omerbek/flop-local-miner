@@ -20,7 +20,7 @@ docker compose version
 
 ## 2. Sürüm sabitlenmiş resmî paketi doğrula
 
-Kaynak: [FLOP Validator dokümanı](https://docs.flop.network/docs/run-validator) ve [UfukNode'un 8 Kasım 2026 tarihli rehberi](https://github.com/UfukNode/flop-validator-setup/blob/main/Turkce-Kurulum.md). Paket ve checksum URL'lerini daima güncel resmî kaynaklardan yeniden doğrula. Saha denemesinde kullanılan sürüm:
+Resmî referans: [FLOP Validator dokümanı](https://docs.flop.network/docs/run-validator). Paket ve checksum adreslerini güncel resmî sürüm üzerinden doğrula. Aşağıdaki sürüm, bu rehberde belgelenen örnek kurulumda kullanıldı:
 
 ```bash
 mkdir -p /opt/flop-validator && cd /opt/flop-validator
@@ -138,4 +138,4 @@ age -p -o /mnt/d/FLOP-Validator-Backup/ssh-identity.tar.gz.age /root/flop-valida
 - Bu repo **resmî Validator paketini dağıtmaz**; yalnızca doğrulama komutları ve saha sürecini açıklar.
 - Saha kanıtları kullanıcının terminal çıktılarından; CI gerçek ağ bağlantısını veya validator aktivasyonunu test etmez.
 - Miner ve Validator aynı WSL2 üzerinde *hazırlanmış* olsa da Validator henüz gerçek DA/node yüküyle birlikte çalıştırılmadı; eşzamanlı performans **ölçülmedi**.
-- Sürüm, güvenlik ve kabul koşulları değişebilir: [resmî rehber](https://docs.flop.network/docs/run-validator), [UfukNode](https://github.com/UfukNode/flop-validator-setup), [FLOP Network Issue #10](https://github.com/flop-labs/network/issues/10).
+- Sürüm, güvenlik ve kabul koşulları değişebilir: [resmî rehber](https://docs.flop.network/docs/run-validator), [FLOP Network Issue #10](https://github.com/flop-labs/network/issues/10).
