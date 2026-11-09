@@ -20,7 +20,7 @@ docker compose version
 
 ## 1 — Resmî CLI ve mevcut kurulum
 
-Bu bölüm **/opt/flop-miner altında operatör paketini zaten kurmuş** makineler içindir. Yalnızca bu repo ile sıfırdan tam kurulum yapılmaz; resmî [miner kılavuzunu](https://docs.flop.network/docs/run-miner) ve [UfukNode örneğini](https://github.com/UfukNode/flop-miner-setup/blob/main/Turkce-Kurulum.md) önce incele. Rastgele scriptleri ve `curl | bash` komutlarını çalıştırma.
+Bu bölüm **/opt/flop-miner altında operatör paketini zaten kurmuş** makineler içindir. Yalnızca bu repo ile sıfırdan tam kurulum yapılmaz; resmî [miner kılavuzunu](https://docs.flop.network/docs/run-miner) incele, kullandığın sürümün CLI komutlarını doğrula. Rastgele scriptleri ve `curl | bash` komutlarını çalıştırma.
 
 ```bash
 cd /opt/flop-miner
@@ -128,4 +128,4 @@ Saha işleminde [GPU envanter bildirimi](https://explorer.devnet.flop.network/tr
 
 Windows uyku modunu engelle; WSL'nin Windows açılışında kendiliğinden başlamasını ayrıca yapılandır. Worker ve backend'i `docker compose ps` ile kontrol et. Tünel URL'si değiştiğinde env/worker duyurusunu güncelle. Signer, keystore ve kalıcı volume'leri yedekle. **`docker compose down -v` çalıştırma.** Laptop ısısını ve güç limitini `nvidia-smi` ile takip et.
 
-[Resmî doküman](https://docs.flop.network/docs/run-miner) · [UfukNode Türkçe rehber](https://github.com/UfukNode/flop-miner-setup/blob/main/Turkce-Kurulum.md). Kullanıcı gözlemleri sahadan aktarılmıştır; repo, üçüncü taraf çalışma kodlarını kopyalamaz.
+[Resmî doküman](https://docs.flop.network/docs/run-miner). Kullanıcı gözlemleri sahadan aktarılmıştır; repo, üçüncü taraf çalışma kodlarını kopyalamaz.
