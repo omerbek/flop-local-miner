@@ -19,6 +19,11 @@ jobs:
         run: bash -n scripts/preflight.sh scripts/gpu-container-test.sh scripts/miner-health.sh
       - name: GPU diagnostic smoke without physical GPU
         run: python scripts/gpu_detect.py --json --dry-run
+      - name: Check interactive site syntax
+        run: |
+          node --check site/app.js
+          node --check site/validator.js
+          python -c "from html.parser import HTMLParser; from pathlib import Path; p=Path('site/validator.html'); assert p.is_file(); HTMLParser().feed(p.read_text(encoding='utf-8'))"
       - name: Check original SVG validity
         run: python -c "import glob,xml.etree.ElementTree as ET; [ET.parse(p) for p in glob.glob('assets/*.svg')]"
   windows:
