@@ -340,8 +340,11 @@ Bu sürüm kombinasyonu geçmiş saha testlerinde çalıştı; yeni zincir runti
 
 ```bash
 cd /opt/flop-miner
-curl -fsSL https://flop.network/releases.json | python3 -m json.tool | head -70
-FLOP_CLI=$(sed -n 's/^FLOP_CLI=//p' miner.env)
+curl -4 -fL --retry 3 --connect-timeout 15 --max-time 60 -o releases.json https://flop.network/releases.json
+python3 -m json.tool releases.json >/dev/null && echo 'JSON OK'
+python3 -m json.tool releases.json | sed -n '1,100p'
+FLOP_CLI=$(sed -n 's/^FLOP_CLI=//p' miner.env | tr -d '\r')
+test -n "$FLOP_CLI" || { echo 'FLOP_CLI miner.env dosyasinda bos'; exit 1; }
 docker pull "$FLOP_CLI"
 docker compose --env-file miner.env -f docker-compose.yml pull
 docker run --rm --network host "$FLOP_CLI" --network devnet --rpc wss://rpc.devnet.flop.network network status
@@ -356,6 +359,8 @@ Her kurulum kendi sr25519 Miner cüzdanını üretmelidir. **Başka bilgisayarda
 
 ```bash
 cd /opt/flop-miner
+FLOP_CLI=$(sed -n 's/^FLOP_CLI=//p' miner.env | tr -d '\r')
+test -n "$FLOP_CLI" || { echo 'FLOP_CLI bos'; exit 1; }
 umask 077
 test ! -e signer || { echo 'Signer dosyasi zaten var. Uzerine yazma'; exit 1; }
 docker run --rm --network host "$FLOP_CLI" keys generate --type sr25519 --show-secret --json > /tmp/flop-new-wallet.json
@@ -380,6 +385,8 @@ Bu script yerel signer ile sadece Devnet sponsor talebi imzalar. Seed veya token
 
 ```bash
 cd /opt/flop-miner
+FLOP_CLI=$(sed -n 's/^FLOP_CLI=//p' miner.env | tr -d '\r')
+test -n "$FLOP_CLI" || { echo 'FLOP_CLI bos'; exit 1; }
 cat > sponsor.mjs <<'JS'
 // Ask the FLOP devnet stake sponsor to register this miner account.
 // Runs inside the FLOP CLI image, which already holds the Polkadot libraries:
@@ -424,6 +431,9 @@ docker run --rm --network host -v /opt/flop-miner:/work:ro --entrypoint node "$F
 
 ```bash
 cd /opt/flop-miner
+FLOP_CLI=$(sed -n 's/^FLOP_CLI=//p' miner.env | tr -d '\r')
+test -n "$FLOP_CLI" || { echo 'FLOP_CLI bos'; exit 1; }
+test -s miner.address || { echo 'miner.address eksik'; exit 1; }
 MINER_ADDRESS=$(cat miner.address)
 docker run --rm --network host "$FLOP_CLI" --network devnet --rpc wss://rpc.devnet.flop.network miner status "$MINER_ADDRESS" --json
 ```
@@ -442,9 +452,11 @@ Modeli kendi adresine kayıtlı modellerle uyumlu şekilde ve *resmî paketin ta
 
 ```bash
 cd /opt/flop-miner
+FLOP_CLI=$(sed -n 's/^FLOP_CLI=//p' miner.env | tr -d '\r')
+test -n "$FLOP_CLI" || { echo 'FLOP_CLI bos'; exit 1; }
 mkdir -p models/qwen2.5-0.5b-instruct
 docker run --rm --network host \
-  -v /opt/flop-miner:/work "$FLOP_CLI_TEST" \
+  -v /opt/flop-miner:/work "$FLOP_CLI" \
   --network devnet --rpc wss://rpc.devnet.flop.network \
   model fetch 0x1a52c1abe781db051e70ae357f72bb70161ca0c092df0b618f22a9292ba63306 \
   --precision BF16 --output-dir /work/models/qwen2.5-0.5b-instruct --json
@@ -456,7 +468,7 @@ docker run --rm --network host \
 
 ## 6 — WSL Ubuntu — Compose ve kritik TOPLOC ayarları
 
-**Resmî pack'ten üretilmiş Compose** üzerinde `SESSION_COMMIT_IDS` ayarını kontrol et. Bu ayar eksikse v0.1.286/OpenAI/TOPLOC modunda `V2 leaf cannot bind a TOPLOC activation commitment (fail closed)` hatası görülmüştü.
+**Bu rehberin 3.2 adımında sıfırdan oluşturulan Compose** üzerinde `SESSION_COMMIT_IDS` ayarını kontrol et. Bu ayar eksikse v0.1.286/OpenAI/TOPLOC modunda `V2 leaf cannot bind a TOPLOC activation commitment (fail closed)` hatası görülmüştü.
 
 ```bash
 cd /opt/flop-miner
@@ -632,6 +644,8 @@ Başlangıçta `calibration.ready=false` olması **normal olabilir**; Ghost doğ
 Dışarıdan endpoint erişimi:
 
 ```bash
+SESSION_HOST=$(sed -n 's/^SESSION_PUBLIC_HOST=//p' /opt/flop-miner/miner.env | tr -d '\r')
+test -n "$SESSION_HOST" || { echo 'SESSION_PUBLIC_HOST bos'; exit 1; }
 curl -sS -o /dev/null -w 'public HTTP %{http_code}\n' "https://$SESSION_HOST/session/info"
 ```
 
@@ -652,7 +666,10 @@ docker compose --env-file miner.env -f docker-compose.yml logs --since=60m worke
 Zincir kaydı:
 
 ```bash
-docker run --rm --network host "$FLOP_CLI_TEST" --network devnet \
+FLOP_CLI=$(sed -n 's/^FLOP_CLI=//p' /opt/flop-miner/miner.env | tr -d '\r')
+MINER_ADDRESS=$(cat /opt/flop-miner/miner.address)
+test -n "$FLOP_CLI" && test -n "$MINER_ADDRESS" || { echo 'CLI veya adres bos'; exit 1; }
+docker run --rm --network host "$FLOP_CLI" --network devnet \
   --rpc wss://rpc.devnet.flop.network miner status "$MINER_ADDRESS" --json
 ```
 
