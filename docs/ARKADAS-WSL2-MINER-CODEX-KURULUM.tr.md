@@ -1,8 +1,8 @@
-# FLOP Devnet GPU Miner + Codex — İkinci Windows/WSL2 Bilgisayar Kurulum Rehberi
+# FLOP Miner — Deneyimlerimden Sıfırdan Kurulum Rehberi
 
 **Tarih:** 11 Kasım 2026  
-**Hedef:** Windows 10/11, WSL2 Ubuntu 24.04, NVIDIA RTX 5090 Laptop GPU (veya uygun başka NVIDIA GPU), bağımsız FLOP Miner ve WSL içinde Codex.  
-**Kurulum yaklaşımı:** Resmî FLOP miner paketini temel al; her cihaz için farklı cüzdan, signer, enclave seed ve session token kullan. Mevcut birinci Miner'ın kimliğini veya Docker volume'lerini **kopyalama**.
+**Hedef:** Sıfır bir Windows bilgisayarda Linux ortamı, NVIDIA GPU, Docker, FLOP Miner, ayrı cüzdan, model, HTTPS tüneli ve Codex CLI kurmak.  
+**Kurulum yaklaşımı:** Hiçbir FLOP dosyası önceden var kabul edilmez; her şey sırasıyla oluşturulur. Her cihaz kendi signer, enclave seed ve token değerlerini kullanır.
 
 > **Devnet uyarısı:** Devnet test ağıdır; token ve işlem ücretleri gerçek para geliri değildir. Resmî FLOP sürümleri sık değişiyor. Bu rehberdeki sürüm/digest örnekleri 11 Kasım 2026 saha gözlemleridir, otomatik olarak güncel veya resmen onaylı kabul edilmez. Nihai sürümü resmî paket README'si ve `https://flop.network/releases.json` ile doğrula. Aynı GPU modeli aynı kalibrasyonu garanti etmez.
 >
@@ -17,7 +17,7 @@ Her adımda **Windows PowerShell** veya **WSL Ubuntu** etiketi var. Kod bloklar�
 - Windows bilgisayarda güncel NVIDIA **Windows** GPU sürücüsü yüklü olmalı. NVIDIA CUDA WSL rehberi: https://docs.nvidia.com/cuda/wsl-user-guide/
 - En az 80–120 GB boş disk hedefle (GPU model imajları, Docker ve yedekler için); gerçek gereksinim artabilir.
 - Sürekli çalışacaksa Windows uyku/hibernation ayarını kapat ve dizüstü bilgisayarın soğutmasını takip et.
-- Her iki Miner için **farklı signer, farklı keystore, farklı enclave seed** şarttır. Arkadaşın kendi ChatGPT hesabıyla Codex'e giriş yapmalıdır.
+- Her iki Miner için **farklı signer, farklı keystore, farklı enclave seed** şarttır. kullanıcı kendi ChatGPT hesabıyla Codex'e giriş yapmalıdır.
 - Cihazı fiziksel olarak kontrol edebilen kullanıcı hesap/keystore dosyalarını güvenli şekilde yerel olarak yedeklemeli. **Asla GitHub'a veya sohbete yüklememeli.**
 
 ### 0.1 — Windows PowerShell (Yönetici) — Windows, WSL ve GPU
@@ -124,7 +124,7 @@ ps -p 1 -o comm=
 
 ## 2 — WSL Ubuntu — Docker Engine + NVIDIA Container Toolkit
 
-> Bu rehber **WSL içindeki Docker Engine** yaklaşımını kullanır. Arkadaşının bilgisayarında Docker Desktop WSL entegrasyonu kuruluysa ikinci Docker daemon kurup çakıştırma. Önce `docker info` ve `docker context ls` ile mevcut kurulumu kontrol et; Desktop mevcutsa resmî Desktop WSL entegrasyonunu kullan, aşağıdaki Linux Docker Engine kurulumunu atla.
+> Bu rehber **WSL içindeki Docker Engine** yaklaşımını kullanır. kullanıcıın bilgisayarında Docker Desktop WSL entegrasyonu kuruluysa yeni Docker daemon kurup çakıştırma. Önce `docker info` ve `docker context ls` ile mevcut kurulumu kontrol et; Desktop mevcutsa resmî Desktop WSL entegrasyonunu kullan, aşağıdaki Linux Docker Engine kurulumunu atla.
 
 ### 2.1 — Docker mevcut mu?
 
@@ -184,89 +184,254 @@ umask 077
 
 ---
 
-## 3 — WSL Ubuntu — resmî FLOP paketini indir ve checksum doğrula
+## 3 — İlk kurulum: Klasör, miner.env ve Docker Compose dosyalarını oluştur
 
-**Resmî doküman:** https://docs.flop.network/docs/run-miner  
-**Resmî paket dizini (11 Kasım 2026 örneği):** https://flop.network/releases/cli/miner-pack-devnet-ts-20261106/
+Bu aşamada **hiçbir FLOP dosyasının kurulu olduğu varsayılmıyor**. Önce yeni klasörü oluşturup ardından `miner.env`, `docker-compose.yml`, signer ve sponsor dosyalarını **tek tek sıfırdan** hazırlıyoruz. Bunlar örnek sürümlerdir; başlatmadan önce https://flop.network/releases.json ile karşılaştır.
+
+```bash
+sudo install -d -m 700 -o "$USER" -g "$(id -gn)" /opt/flop-miner
+cd /opt/flop-miner
+umask 077
+mkdir -p models/qwen2.5-0.5b-instruct session-keys
+pwd
+```
+
+
+### 3.1 — miner.env oluştur
+
+İlk olarak aşağıdaki komut yeni dosyayı oluşturur. Gizli token değerlerini hemen sonrasında rastgele üretiyoruz.
 
 ```bash
 cd /opt/flop-miner
-BASE=https://flop.network/releases/cli/miner-pack-devnet-ts-20261106
-curl -fL --retry 3 -o flop-miner-pack-devnet-ts-20261106.tar.gz "$BASE/flop-miner-pack-devnet-ts-20261106.tar.gz"
-curl -fL --retry 3 -o OFFICIAL-PACK-README.md "$BASE/README.md"
-echo '35f222f748447a8aabdd015d94260d8facfd29305691c3cf7ed033cbb2b514b1  flop-miner-pack-devnet-ts-20261106.tar.gz' | sha256sum -c -
-```
+cat > miner.env <<'ENV'
+# FLOP devnet miner settings. Copy to miner.env and fill the three REPLACE values.
+# Images: worker v0.1.286 and backend v0.1.239 pinned from https://flop.network/releases.json (8 Nov 2026).
+# CLI v0.1.290 (7 Nov 2026): the chain runs runtime 1014014, which CLI v0.1.220 cannot read.
+FLOP_CLI=ghcr.io/flop-labs/flop-core/cli:v0.1.290@sha256:24e32b034b0d3600ee28127dad30d4228e623235f2dc62da34c2c85ba5e21a88
+FLOP_WORKER_IMAGE=ghcr.io/flop-labs/flop-core/miner-worker:v0.1.286@sha256:78211fe5f63820eeb1191e834f3a1eb7f573bc34348bdd4c0b0f07c7824fe7b5
+FLOP_BACKEND_IMAGE=ghcr.io/flop-labs/flop-core/miner-vllm-toploc:v0.1.239@sha256:9b6c6dfc4d77ac37583d28dbfdcb4fa96207ae95956c1e859b7d5e9eef6f7b9e
 
-**Checksum `OK` değilse devam etme.** Resmî doküman güncellenmişse yeni paketi ve onun resmî checksum değerini kullan.
+# Network
+FLOP_RPC=wss://rpc.devnet.flop.network
+GHOST_MAILBOX_URL=https://mailbox.devnet.flop.network
 
-Arşiv içeriğini listele, beklenmeyen yol/tür olmadığını incele:
+# A name for your miner (letters, numbers and dashes)
+WORKER_NAME=flop-miner
 
-```bash
-tar -tzf flop-miner-pack-devnet-ts-20261106.tar.gz | head -70
-```
+# The model FLOP registered on devnet (do not change)
+MODEL_NAME=Qwen/Qwen2.5-0.5B-Instruct
+OPENROUTER_MODEL_SLUG=qwen/qwen2.5-0.5b-instruct
+MODEL_HASH=0x1a52c1abe781db051e70ae357f72bb70161ca0c092df0b618f22a9292ba63306
+MODEL_PRECISION=BF16
+TOPLOC_PRECISION=bf16
+DECODE_POLICY_HASH=0xeca6a3f9c5a9fa1556892182ffef15b1273c075146a2d1a87814ae83ecea3053
+DECODE_POLICY='{"version":1,"class":"TextGeneration","tokenizer_hash":"0x0000000000000000000000000000000000000000000000000000000000000000","sampling":{"temperature_milli":700,"top_p_ppm":950000,"top_k":40,"repetition_penalty_ppm":1000000,"beam_width":1,"seed":1},"stop_conditions_hash":"0x0000000000000000000000000000000000000000000000000000000000000000","output_transform":"Identity","class_policy_hash":"0x0000000000000000000000000000000000000000000000000000000000000000"}'
 
-Arşivden dosyaları temiz bir alt klasöre çıkar:
+# Private values: create each with  openssl rand -hex 32
+INFERENCE_API_KEY=REPLACE_AT_RUNTIME
+SESSION_AUTH_TOKEN=REPLACE_AT_RUNTIME
 
-```bash
-mkdir -p official-pack
-tar -xzf flop-miner-pack-devnet-ts-20261106.tar.gz -C official-pack
-find official-pack -maxdepth 3 -type f | sort | head -100
-```
-
-> **Önemli:** Resmî arşivin klasör hiyerarşisini ve betik adlarını burada tahmin etmiyoruz. `OFFICIAL-PACK-README.md` ile indirilen dosyaların gerçek adımlarını karşılaştır. `./sponsor.sh`, `./decode-policy.sh` ve miner hesabı hazırlama komutlarını **resmî paketin kendi README'sindeki sırayla** çalıştır. Resmî paket yoluyla üretilen `miner.env` / `docker-compose.yml` bizim çalışma dizinimizde bulunacak şekilde kurulum yap. Eğer paket artık farklı bir yapıya sahipse Codex'e yeni yapılandırmayı incelet; eski dosyaların üzerine körlemesine yazma.
-
-Resmî yönergede ilk hesap oluşturma, sponsor, model identity/decode policy ve Compose aşamaları vardır. İleride çalışacak kontrol komutları için önce bunları tamamlamak gerekir.
-
----
-
-## 4 — WSL Ubuntu — ayrı Miner kimliği, sponsor ve doğru CLI
-
-**BİRİNCİ BİLGİSAYARIN signer/keystore/seed veya miner.env dosyasını kopyalama.** İkinci cihaz için ayrı hesabı **resmî paketin README komutuyla** oluştur. Oluşan adresi güvenle not et; özel anahtarı gösterme.
-
-Resmî paketin `miner.env` ve `docker-compose.yml` dosyaları hazırlanıp oluşturulduktan sonra:
-
-```bash
-cd /opt/flop-miner
-ls -l docker-compose.yml miner.env
+# Public HTTPS name of your miner (the tunnel address, without https://)
+SESSION_PUBLIC_HOST=
+ENV
 chmod 600 miner.env
-ls -l signer session-keys/enclave.seed 2>/dev/null || true
+sed -i "s/^INFERENCE_API_KEY=.*/INFERENCE_API_KEY=$(openssl rand -hex 32)/" miner.env
+sed -i "s/^SESSION_AUTH_TOKEN=.*/SESSION_AUTH_TOKEN=$(openssl rand -hex 32)/" miner.env
+read -r -p 'Miner adi (kucuk harf-rakam-tire): ' N
+[[ "$N" =~ ^[a-z0-9-]+$ ]] || { echo 'Gecersiz isim'; exit 1; }
+sed -i "s/^WORKER_NAME=.*/WORKER_NAME=$N/" miner.env
+echo 'miner.env olusturuldu. Gizli tokenlari ekrana bastirma.'
 ```
 
-FLOP Devnet 7 Kasım'da runtime `1014014`'e geçtiğinde CLI `v0.1.220` uyumsuzdu. Sahada **`v0.1.290`** ile salt-okunur `miner status` çalıştı. **Bu CLI'nin güncel runtime ile uyumunu yeniden doğrula**; daha yeni, resmen uygun sürüm varsa onu seç:
+
+### 3.2 — docker-compose.yml oluştur
+
+Bu dosyayı da sıfırdan oluşturuyoruz. `SESSION_COMMIT_IDS=1` kritik bir TOPLOC ayarıdır.
 
 ```bash
-curl -fsSL https://flop.network/releases.json | python3 -m json.tool | head -100
+cd /opt/flop-miner
+cat > docker-compose.yml <<'YAML'
+# FLOP devnet GPU miner: the model backend and the miner worker on one GPU server.
+# Values come from miner.env (docker compose --env-file miner.env ...).
+name: flop-miner
+
+services:
+  backend:
+    image: ${FLOP_BACKEND_IMAGE:?set FLOP_BACKEND_IMAGE in miner.env}
+    restart: unless-stopped
+    environment:
+      MODEL_NAME: ${MODEL_NAME}
+      MODEL_HASH: ${MODEL_HASH}
+      MODEL_DIR: /models/checkpoint
+      TOPLOC_PRECISION: ${TOPLOC_PRECISION}
+      DECODE_POLICY: ${DECODE_POLICY}
+      DECODE_POLICY_HASH: ${DECODE_POLICY_HASH}
+      INFERENCE_API_KEY: ${INFERENCE_API_KEY:?set INFERENCE_API_KEY in miner.env}
+    volumes:
+      - ./models/qwen2.5-0.5b-instruct:/models/checkpoint:ro
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  worker:
+    image: ${FLOP_WORKER_IMAGE:?set FLOP_WORKER_IMAGE in miner.env}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    command: ["--rpc", "${FLOP_RPC}"]
+    working_dir: /data
+    environment:
+      MINER_BACKEND: openai
+      OPENAI_BASE_URL: http://backend:8000/v1
+      INFERENCE_API_KEY: ${INFERENCE_API_KEY}
+      MINER_MODEL: ${MODEL_NAME}
+      OPENROUTER_MODEL_SLUG: ${OPENROUTER_MODEL_SLUG}
+      WORKER_NAME: ${WORKER_NAME}
+      MINER_SIGNER_FILE: /run/flop/signer
+      MINER_ENCLAVE_KEY_FILE: /run/flop/enclave.seed
+      MODEL_HASH: ${MODEL_HASH}
+      MODEL_PRECISION: ${MODEL_PRECISION}
+      MODEL_CHECKPOINT_DIR: /models/checkpoint
+      DECODE_POLICY_HASH: ${DECODE_POLICY_HASH}
+      TOPLOC_ENABLED: "1"
+      TOPLOC_PRECISION: ${TOPLOC_PRECISION}
+      SESSION_PORT: "8645"
+      SESSION_CHAIN: "1"
+      SESSION_COMMIT_IDS: "1"
+      SESSION_AUTH_TOKEN: ${SESSION_AUTH_TOKEN:?set SESSION_AUTH_TOKEN in miner.env}
+      SESSION_PUBLIC_HOST: ${SESSION_PUBLIC_HOST}
+      GHOST_MAILBOX_URL: ${GHOST_MAILBOX_URL}
+      GHOST_KEY_FILE: /data/ghost-x25519.json
+    volumes:
+      - ./signer:/run/flop/signer:ro
+      - ./session-keys/enclave.seed:/run/flop/enclave.seed:ro
+      - ./models/qwen2.5-0.5b-instruct:/models/checkpoint:ro
+      - worker-data:/data
+    ports:
+      - "127.0.0.1:8645:8645"
+
+volumes:
+  worker-data:
+YAML
+python3 - <<'PY'
+from pathlib import Path
+p=Path('docker-compose.yml')
+s=p.read_text()
+if 'SESSION_COMMIT_IDS:' not in s:
+    anchor='      SESSION_CHAIN: "1"'
+    if s.count(anchor)!=1:
+        raise SystemExit('SESSION_CHAIN satiri beklenenden farkli; manuel kontrol gerekli')
+    p.write_text(s.replace(anchor, anchor+'\n      SESSION_COMMIT_IDS: "1"'))
+print('Compose dosyasi yazildi.')
+PY
+docker compose --env-file miner.env -f docker-compose.yml config -q
+echo 'Compose OK'
 ```
 
-Aşağıdaki image **sahada doğrulanan uyumluluk örneğidir; güncel resmî manifest ile karşılaştırılmalıdır**:
+
+### 3.3 — FLOP CLI ve Docker imajlarını indir
+
+Bu sürüm kombinasyonu geçmiş saha testlerinde çalıştı; yeni zincir runtime'ı ile uyumluluğu ve güncel release manifestini kontrol et.
 
 ```bash
-FLOP_CLI_TEST='ghcr.io/flop-labs/flop-core/cli:v0.1.290@sha256:24e32b034b0d3600ee28127dad30d4228e623235f2dc62da34c2c85ba5e21a88'
-docker run --rm --network host "$FLOP_CLI_TEST" --network devnet --rpc wss://rpc.devnet.flop.network network status || true
+cd /opt/flop-miner
+curl -fsSL https://flop.network/releases.json | python3 -m json.tool | head -70
+FLOP_CLI=$(sed -n 's/^FLOP_CLI=//p' miner.env)
+docker pull "$FLOP_CLI"
+docker compose --env-file miner.env -f docker-compose.yml pull
+docker run --rm --network host "$FLOP_CLI" --network devnet --rpc wss://rpc.devnet.flop.network network status
 ```
 
-`miner.env` içindeki CLI alanı eski ise, resmî kurulum komutlarının gerektirdiği sürüme **kontrollü** geç. Özel anahtarları yazdırma. `sponsor.sh` yalnızca **ikinci cihazın yeni signer'ı** için çalıştırılmalı. Sponsor `429` / `403` / hata döndürürse adresi değiştirmek yerine hata koduna göre ilerle; onaylı kayıt görünmeden sonraki aşamalara geçme.
 
-Kendi SS58 adresini terminalde bir değişkene yaz (buradaki örnek adresi kendi adresinle değiştir):
+## 4 — Yeni Miner cüzdanı, signer ve sponsor kaydı
+
+Her kurulum kendi sr25519 Miner cüzdanını üretmelidir. **Başka bilgisayardaki signer, enclave seed, keystore veya miner.env dosyasını kopyalama.**
+
+### 4.1 — Yeni cüzdan oluştur
 
 ```bash
-read -r -p 'YENI miner SS58 adresi: ' MINER_ADDRESS
-printf '%s\n' "$MINER_ADDRESS" > /opt/flop-miner/miner.address
-chmod 600 /opt/flop-miner/miner.address
+cd /opt/flop-miner
+umask 077
+test ! -e signer || { echo 'Signer dosyasi zaten var. Uzerine yazma'; exit 1; }
+docker run --rm --network host "$FLOP_CLI" keys generate --type sr25519 --show-secret --json > /tmp/flop-new-wallet.json
+jq -e '.mnemonic and .address' /tmp/flop-new-wallet.json >/dev/null || { echo 'Cuzdan yaniti beklenen formatta degil'; exit 1; }
+jq -r .mnemonic /tmp/flop-new-wallet.json > signer
+jq -r .address /tmp/flop-new-wallet.json > miner.address
+chmod 600 signer miner.address
+echo 'Miner public SS58 adresi:'
+cat miner.address
+rm -f /tmp/flop-new-wallet.json
+test ! -e session-keys/enclave.seed || { echo 'Enclave seed mevcut'; exit 1; }
+openssl rand -hex 32 > session-keys/enclave.seed
+chmod 600 session-keys/enclave.seed
 ```
 
-CLI ile salt-okunur zincir doğrulaması:
+
+**Güvenlik:** `signer` dosyası özel anahtar niteliğindedir. Dosyayı veya 24 kelimeyi GitHub, Codex sohbeti, Telegram, WhatsApp ya da ekran görüntüsüyle paylaşma. Güvenli, çevrimdışı yedeğini yalnızca cihaz sahibi saklamalı. `miner.address` ise herkese açık adrestir.
+
+### 4.2 — Sponsor istemi dosyasını oluştur
+
+Bu script yerel signer ile sadece Devnet sponsor talebi imzalar. Seed veya token değerini yazdırmaz. Sponsor kapasitesi doluysa aynı kimlikle daha sonra tekrar dene; yeni cüzdan açarak limit aşmaya çalışma.
 
 ```bash
-docker run --rm --network host "$FLOP_CLI_TEST" \
-  --network devnet --rpc wss://rpc.devnet.flop.network \
-  miner status "$MINER_ADDRESS" --json
+cd /opt/flop-miner
+cat > sponsor.mjs <<'JS'
+// Ask the FLOP devnet stake sponsor to register this miner account.
+// Runs inside the FLOP CLI image, which already holds the Polkadot libraries:
+//   docker run --rm -v /opt/flop-miner:/work --entrypoint node "$FLOP_CLI" /work/sponsor.mjs
+// It reads the one-line miner seed from /work/signer and never prints it.
+import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+
+const require = createRequire('/app/');
+const { Keyring } = require('@polkadot/keyring');
+const { cryptoWaitReady } = require('@polkadot/util-crypto');
+const stringToU8a = (text) => new Uint8Array(Buffer.from(text, 'utf8'));
+const u8aToHex = (bytes) => `0x${Buffer.from(bytes).toString('hex')}`;
+
+const SPONSOR = process.env.SPONSOR_URL || 'https://faucet.flop.network';
+const seed = readFileSync(process.env.MINER_SEED_FILE || '/work/signer', 'utf8').trim();
+
+await cryptoWaitReady();
+const pair = new Keyring({ type: 'sr25519', ss58Format: 42 }).addFromUri(seed);
+const chain = await (await fetch(`${SPONSOR}/chain`)).json();
+const issuedAt = String(Date.now());
+const message = `flop-sponsor/v1|miner|${chain.genesisHash}|${pair.address}|${issuedAt}`;
+const signature = u8aToHex(pair.sign(stringToU8a(message)));
+
+console.log(`Miner address: ${pair.address}`);
+const res = await fetch(`${SPONSOR}/sponsor/miner`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ address: pair.address, issuedAt, signature }),
+});
+const body = await res.text();
+console.log(`HTTP ${res.status}`);
+console.log(body);
+process.exit(res.ok ? 0 : 1);
+JS
+chmod 600 sponsor.mjs
+docker run --rm --network host -v /opt/flop-miner:/work:ro --entrypoint node "$FLOP_CLI" /work/sponsor.mjs
 ```
 
-**Beklenen:** `registered:true` ve `stake.active:true` (sponsor işlemi tamamlandıktan sonra). Bunun otomatik gerçekleştiğini varsayma. Yanıt `Unsupported runtime spec version` ise CLI sürümü değişmiş olabilir; imaj sürümünü gözden geçir.
+
+### 4.3 — Kayıt ve stake durumunu doğrula
+
+```bash
+cd /opt/flop-miner
+MINER_ADDRESS=$(cat miner.address)
+docker run --rm --network host "$FLOP_CLI" --network devnet --rpc wss://rpc.devnet.flop.network miner status "$MINER_ADDRESS" --json
+```
+
+
+**Beklenen:** `registered: true` ve `stake.active: true`. Sponsor sonucu veya zincirde kayıt başarısızsa sonraki aşamaya geçme. Zaten sponsor kaydettiyse ayrıca `miner register` yapma.
 
 ---
-
 ## 5 — WSL Ubuntu — doğru BF16 modeli indir ve doğrula
 
 Kayıtlı saha modeli: `Qwen/Qwen2.5-0.5B-Instruct`, BF16, root:
@@ -442,7 +607,7 @@ docker compose --env-file miner.env -f docker-compose.yml logs --tail=100 worker
   | grep -Ei 'Signer:|ghost|model-gate|Session host|Endpoint ad|error|failed'
 ```
 
-**Görülmesi gerekenler:** doğru (ikinci cihaza ait) `Signer`, `ghost key`, `model-gate OK`, `Session host listening on :8645`, `Endpoint ad (...) published`.
+**Görülmesi gerekenler:** doğru (bu cihaza ait) `Signer`, `ghost key`, `model-gate OK`, `Session host listening on :8645`, `Endpoint ad (...) published`.
 
 Worker konteynerinde kritik değişkenleri kontrol et:
 
@@ -514,7 +679,7 @@ Ayrıca FLOP Explorer'da **aynı kanal için** `registerSessionEvidence`, `submi
 
 ## 10 — WSL Ubuntu — Codex CLI'yi kur ve kendi hesabınla aç
 
-**Codex = terminalde yerel dosya ve Docker logları üzerinde çalışabilen yazılım ajanı.** Arkadaşın kendi ChatGPT hesabıyla oturum açmalı. Codex'in birinci bilgisayarın ChatGPT oturumunu kullanmasına gerek yok.
+**Codex = terminalde yerel dosya ve Docker logları üzerinde çalışabilen yazılım ajanı.** kullanıcı kendi ChatGPT hesabıyla oturum açmalı. Codex'in başka bilgisayarın ChatGPT oturumunu kullanmasına gerek yok.
 
 **Resmî kurulum rehberi:** https://developers.openai.com/codex/cli
 
@@ -696,7 +861,7 @@ echo "Backup directory created under home (private): $BACKUP"
 - [ ] Windows NVIDIA sürücüsü ve WSL içi `nvidia-smi` çalışıyor.
 - [ ] Docker GPU konteyner testi çalışıyor.
 - [ ] Resmî miner pack checksum **OK**.
-- [ ] İkinci bilgisayar için **ayrı Miner signer/keystore** oluşturuldu, özel yedeklendi.
+- [ ] Yeni kurulum için **ayrı Miner signer/keystore** oluşturuldu, özel yedeklendi.
 - [ ] Yeni hesap sponsor ile kayıtlı ve `stake.active:true`.
 - [ ] BF16 model indirildi ve verity root eşleşti.
 - [ ] Backend `/health` modeli doğruluyor.
